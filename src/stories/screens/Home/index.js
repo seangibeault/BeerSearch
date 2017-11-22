@@ -8,18 +8,27 @@ import {
   Button,
   Icon,
   Left,
+  Thumbnail,
   Body,
   Right,
   List,
-  ListItem
+  ListItem,
+  Input,
+  Item,
+  Card,
+  CardItem,
+  Spinner
 } from "native-base";
 
 import styles from "./styles";
 export interface Props {
   navigation: any;
-  list: any;
+  search: Function;
+  updateSearchText: Function;
+  beer: Object;
+  isLoading: boolean;
 }
-export interface State {}
+export interface State { }
 class Home extends React.Component<Props, State> {
   render() {
     return (
@@ -39,19 +48,55 @@ class Home extends React.Component<Props, State> {
           </Body>
           <Right />
         </Header>
+
         <Content>
+          <Card>
+            <CardItem searchBar rounded>
+              <Item>
+                <Icon name="ios-search" onPress={() => (this.props.search())} />
+                <Input
+                  placeholder="Search for beer"
+                  value={this.props.searchText}
+                  onChangeText={(text) => this.props.updateSearchText(text)}
+                  returnKeyLabel={"search"}
+                  onSubmitEditing={e => {
+                      this.props.search();
+                  }}
+                />
+              </Item>
+            </CardItem>
+          </Card>
           <List>
-            {this.props.list.map((item, i) => (
-              <ListItem
-                key={i}
-                onPress={() =>
-                  this.props.navigation.navigate("BlankPage", {
-                    name: { item }
-                  })}
-              >
-                <Text>{item}</Text>
-              </ListItem>
-            ))}
+            {
+              this.props.isLoading ?
+                <Spinner />
+              :
+              this.props.beers.data ?
+                this.props.beers.data.map((beer, i) => (
+                  <ListItem
+                    avatar
+                    key={i}
+                  >
+                    <Left>
+                      {
+                        beer.labels ?
+                          <Thumbnail source={{ uri: beer.labels.icon }} /> :
+                          <Icon name="ios-beer" />
+                      }
+
+                    </Left>
+                    <Body>
+                      <Text>{beer.nameDisplay}</Text>
+                      {
+                        beer.style ?
+                          <Text note>{beer.style.description}</Text> :
+                          <Text />
+                      }
+                    </Body>
+                  </ListItem>
+                ))
+                : <Text>No Results Found</Text>
+            }
           </List>
         </Content>
       </Container>

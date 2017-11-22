@@ -1,6 +1,8 @@
 const initialState = {
 	list: [],
-	isLoading: true,
+	isLoading: false,
+	beers:{
+	}
 };
 
 export default function(state: any = initialState, action: Function) {
@@ -10,10 +12,17 @@ export default function(state: any = initialState, action: Function) {
 			list: action.list,
 		};
 	}
-	if (action.type === "LIST_IS_LOADING") {
+	if (action.type === "IS_LOADING") {
 		return {
 			...state,
 			isLoading: action.isLoading,
+		};
+	}
+	if (action.type === "SEARCH_BEER_SUCCESS"){
+		return {
+			...state,
+			beers: action.data,
+			isLoading: false
 		};
 	}
 	return state;

@@ -1,7 +1,8 @@
 {
 	"expo": {
 		"sdkVersion": "20.0.0",
-		"slug": "React-Native-Seed",
+		"slug": "Beer-Search",
+		"name": "Beer Search",
 		"loading": {
 			"hideExponentText": false,
 			"icon": "./assets/loading.png"
@@ -15,6 +16,9 @@
 		"androidStatusBar": {
 			"barStyle": "light-content",
 			"backgroundColor": "#334393"
+		},
+		"android": {
+			"package": "com.sean.beerSearch"
 		}
 	}
 }

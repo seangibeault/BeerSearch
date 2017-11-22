@@ -2,31 +2,55 @@
 import * as React from "react";
 import { connect } from "react-redux";
 import Home from "../../stories/screens/Home";
-import datas from "./data";
-import { fetchList } from "./actions";
+import { fetchList, beerSearch } from "./actions";
 export interface Props {
 	navigation: any,
 	fetchList: Function,
 	data: Object,
 }
-export interface State {}
+export interface State { }
 class HomeContainer extends React.Component<Props, State> {
-	componentDidMount() {
-		this.props.fetchList(datas);
+
+	constructor(props) {
+		super(props);
+
+		this.state = {
+			searchText: ""
+		};
+
+		this.updateSearchText = this.updateSearchText.bind(this);
+		this.search = this.search.bind(this);
 	}
+
+	updateSearchText(value) {
+		this.setState({
+			searchText: value
+		});
+	}
+
+	search() {
+		this.props.beerSearch(this.state.searchText);
+	}
+
+	componentDidMount() {
+	}
+
+
 	render() {
-		return <Home navigation={this.props.navigation} list={this.props.data} />;
+		return <Home navigation={this.props.navigation} isLoading={this.props.isLoading} updateSearchText={this.updateSearchText} beers={this.props.beers} search={this.search} />;
 	}
 }
 
 function bindAction(dispatch) {
 	return {
 		fetchList: url => dispatch(fetchList(url)),
+		beerSearch: name => dispatch(beerSearch(name))
 	};
 }
 
 const mapStateToProps = state => ({
 	data: state.homeReducer.list,
 	isLoading: state.homeReducer.isLoading,
+	beers: state.homeReducer.beers
 });
 export default connect(mapStateToProps, bindAction)(HomeContainer);

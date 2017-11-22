@@ -11,7 +11,7 @@ export default function configureStore(onCompletion: () => void): any {
 		applyMiddleware(thunk),
 		devTools({
 			name: "nativestarterkit",
-			realtime: true,
+			realtime: true
 		})
 	);
 
