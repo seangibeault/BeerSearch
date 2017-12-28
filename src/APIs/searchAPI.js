@@ -8,4 +8,9 @@ export default class searchAPI {
       });
   }
 
+  static getBeerById(id){
+    return fetch("http://api.brewerydb.com/v2/beer/" + id + "?key=7d5821cbd9436ee1e95c34b7cbfc3d46").catch((error) => {
+        console.error(error);
+      });
+  }
 }

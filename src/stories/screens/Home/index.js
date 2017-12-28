@@ -27,6 +27,7 @@ export interface Props {
   updateSearchText: Function;
   beer: Object;
   isLoading: boolean;
+  goToBeerDetailsPage: Function
 }
 export interface State { }
 class Home extends React.Component<Props, State> {
@@ -60,7 +61,7 @@ class Home extends React.Component<Props, State> {
                   onChangeText={(text) => this.props.updateSearchText(text)}
                   returnKeyLabel={"search"}
                   onSubmitEditing={e => {
-                      this.props.search();
+                    this.props.search();
                   }}
                 />
               </Item>
@@ -70,32 +71,33 @@ class Home extends React.Component<Props, State> {
             {
               this.props.isLoading ?
                 <Spinner />
-              :
-              this.props.beers.data ?
-                this.props.beers.data.map((beer, i) => (
-                  <ListItem
-                    avatar
-                    key={i}
-                  >
-                    <Left>
-                      {
-                        beer.labels ?
-                          <Thumbnail source={{ uri: beer.labels.icon }} /> :
-                          <Icon name="ios-beer" />
-                      }
+                :
+                this.props.beers.data ?
+                  this.props.beers.data.map((beer, i) => (
+                    <ListItem
+                      avatar
+                      key={i}
+                      onPress={(e) => (this.props.goToBeerDetailsPage(beer.id))}
+                    >
+                      <Left>
+                        {
+                          beer.labels ?
+                            <Thumbnail source={{ uri: beer.labels.icon }} /> :
+                            <Icon name="ios-beer" android="ios-beer" size={56} style={{fontSize:56, width: 56, height: 56 }} />
+                        }
 
-                    </Left>
-                    <Body>
-                      <Text>{beer.nameDisplay}</Text>
-                      {
-                        beer.style ?
-                          <Text note>{beer.style.description}</Text> :
-                          <Text />
-                      }
-                    </Body>
-                  </ListItem>
-                ))
-                : <Text>No Results Found</Text>
+                      </Left>
+                      <Body>
+                        <Text>{beer.nameDisplay}</Text>
+                        {
+                          beer.style ?
+                            <Text note>{beer.style.description.substring(0, 75) + "..."}</Text> :
+                            <Text />
+                        }
+                      </Body>
+                    </ListItem>
+                  ))
+                  : <Text>No Results Found</Text>
             }
           </List>
         </Content>

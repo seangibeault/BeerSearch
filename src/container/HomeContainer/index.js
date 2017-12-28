@@ -2,10 +2,10 @@
 import * as React from "react";
 import { connect } from "react-redux";
 import Home from "../../stories/screens/Home";
-import { fetchList, beerSearch } from "./actions";
+import { beerSearch } from "./actions";
 export interface Props {
 	navigation: any,
-	fetchList: Function,
+	beerSearch: Function,
 	data: Object,
 }
 export interface State { }
@@ -20,6 +20,7 @@ class HomeContainer extends React.Component<Props, State> {
 
 		this.updateSearchText = this.updateSearchText.bind(this);
 		this.search = this.search.bind(this);
+		this.goToBeerDetailsPage = this.goToBeerDetailsPage.bind(this);
 	}
 
 	updateSearchText(value) {
@@ -32,18 +33,24 @@ class HomeContainer extends React.Component<Props, State> {
 		this.props.beerSearch(this.state.searchText);
 	}
 
-	componentDidMount() {
+	goToBeerDetailsPage(id:Number) {
+		this.props.navigation.navigate("BeerDetailsPage", { id });
 	}
 
-
 	render() {
-		return <Home navigation={this.props.navigation} isLoading={this.props.isLoading} updateSearchText={this.updateSearchText} beers={this.props.beers} search={this.search} />;
+		return <Home
+			goToBeerDetailsPage={this.goToBeerDetailsPage}
+			navigation={this.props.navigation}
+			isLoading={this.props.isLoading}
+			updateSearchText={this.updateSearchText}
+			beers={this.props.beers}
+			search={this.search}
+		/>;
 	}
 }
 
 function bindAction(dispatch) {
 	return {
-		fetchList: url => dispatch(fetchList(url)),
 		beerSearch: name => dispatch(beerSearch(name))
 	};
 }

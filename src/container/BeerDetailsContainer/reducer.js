@@ -1,26 +1,25 @@
 const initialState = {
+	beerDetails: {},
 	isLoading: false,
-	beers:{
-	}
 };
 
 export default function(state: any = initialState, action: Function) {
-	// if (action.type === "FETCH_LIST_SUCCESS") {
-	// 	return {
-	// 		...state,
-	// 		list: action.list,
-	// 	};
-	// }
-	if (action.type === "SEARCH_IS_LOADING") {
+	if (action.type === "DETAILS_IS_LOADING") {
 		return {
 			...state,
 			isLoading: action.isLoading,
 		};
 	}
-	if (action.type === "SEARCH_BEER_SUCCESS"){
+	if (action.type === "DETAILS_CLEAR"){
 		return {
 			...state,
-			beers: action.data,
+			initialState
+		};
+	}
+	if (action.type === "GET_DETAILS_SUCCESS"){
+		return {
+			...state,
+			beerDetails: action.beerDetails,
 			isLoading: false
 		};
 	}
